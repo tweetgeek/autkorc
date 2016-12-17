@@ -3,13 +3,14 @@
 
 #include "Arduino.h"
 #include "Light/Light.h"
+#include "GearBox/GearBox.h"
 #include "CPPM/CPPM.h"
 
 class Engine {
 private:
 	Light _lights;
 	int errorCounter;
-	int gear;
+	GearBox gearBox;
 	int16_t iCppmPosition;
 	int16_t iCppmPositionLast;
 

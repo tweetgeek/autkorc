@@ -1,10 +1,13 @@
 #include "Engine/Engine.h"
 #include "Light/Light.h"
+#include "GearBox/GearBox.h"
 #include "Arduino.h"
 #include "CPPM/CPPM.h"
 #include "CPPMHelper/CPPMHelper.h"
 
 void Engine::setup(Light& lights) {
+	this->gearBox.setup();
+
 	this->_lights = lights;
 
 	pinMode(ENGINE_PIN_STBY, OUTPUT);
@@ -20,10 +23,11 @@ void Engine::setup(Light& lights) {
 	this->errorCounter = 0;
 	this->iCppmPosition = 0;
 	this->iCppmPositionLast = 0;
-	this->gear = A_LOW;
 }
 
 void Engine::update() {
+	this->gearBox.update();
+
 	if (CPPM.ok()) {
 		this->errorCounter = 0;
 		int16_t channelsValue = CPPM.readChannel(CPPM_THROTLE_CHANNEL);
