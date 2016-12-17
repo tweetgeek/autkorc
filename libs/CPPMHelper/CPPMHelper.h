@@ -1,6 +1,7 @@
 #ifndef CPPMHELPER_H
 #define CPPMHELPER_H
 
+#include "Arduino.h"
 #include "Settings/Settings.h"
 
 #define A_LOW 0

@@ -6,7 +6,7 @@
 
 int16_t Steering::convertPosition(int16_t currentValue) {
 	if (currentValue) {
-		return Steering::fixRange(
+		return this->fixRange(
 				map(currentValue, 0, 255, SERVO_MAX_ANGLE_LEFT,
 				SERVO_MAX_ANGLE_RIGHT));
 	}
@@ -15,7 +15,7 @@ int16_t Steering::convertPosition(int16_t currentValue) {
 
 int16_t Steering::fixRange(int16_t value) {
 	if (value == 0)
-		return iCppmPositionLast;
+		return this->iCppmPositionLast;
 	if (value < SERVO_MAX_ANGLE_LEFT)
 		return SERVO_MAX_ANGLE_LEFT;
 	if (value > SERVO_MAX_ANGLE_RIGHT)
@@ -25,37 +25,37 @@ int16_t Steering::fixRange(int16_t value) {
 
 void Steering::update() {
 	if (CPPM.ok()) {
-		errorCounter = 0;
+		this->errorCounter = 0;
 		int16_t channelsValue = CPPM.readChannel(CPPM_STEERING_CHANNEL);
-		iCppmPosition = Steering::convertPosition(channelsValue);
+		this->iCppmPosition = Steering::convertPosition(channelsValue);
 	} else {
-		++errorCounter;
-		if (errorCounter > CPPM_MAX_ERRORS) {
-			errorCounter = 0;
-			iCppmPosition = SERVO_ZERO_POSITION;
+		++this->errorCounter;
+		if (this->errorCounter > CPPM_MAX_ERRORS) {
+			this->errorCounter = 0;
+			this->iCppmPosition = SERVO_ZERO_POSITION;
 			Serial.print("Comunication error!! Set center");
 			Serial.print("\n");
 		}
 	}
 
-	if (RHelper.deadbandFilter(iCppmPositionLast, iCppmPosition)
-			&& errorCounter == 0) { //DEADBAND
-		iCppmPositionLast = iCppmPosition;
+	if (RHelper.deadbandFilter(this->iCppmPositionLast, this->iCppmPosition)
+			&& this->errorCounter == 0) { //DEADBAND
+		this->iCppmPositionLast = this->iCppmPosition;
 		Serial.print("Set Servo Position: ");
-		Serial.print(iCppmPosition);
+		Serial.print(this->iCppmPosition);
 		Serial.print("\n");
 
-		sServo.write(iCppmPosition);
+		this->sServo.write(this->iCppmPosition);
 	}
 
-	_lights.updateSteeringPosition(iCppmPosition);
+	this->_lights.updateSteeringPosition(this->iCppmPosition);
 }
 
 void Steering::setup(Light &lights) {
-	iCppmPosition = SERVO_ZERO_POSITION;
-	iCppmPositionLast = SERVO_ZERO_POSITION;
-	errorCounter = 0;
+	this->iCppmPosition = SERVO_ZERO_POSITION;
+	this->iCppmPositionLast = SERVO_ZERO_POSITION;
+	this->errorCounter = 0;
 
-	_lights = lights;
-	sServo.attach(3);
+	this->_lights = lights;
+	this->sServo.attach(3);
 }

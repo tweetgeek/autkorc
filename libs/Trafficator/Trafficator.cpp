@@ -1,45 +1,45 @@
 #include "Trafficator.h"
 
 void Trafficator::setup(uint8_t pin) {
-	isEnabled = false;
-	ledState = false;
-	previousMillis = 0;
-	interval = 300;
-	pinout = A0;
+	this->isEnabled = false;
+	this->ledState = false;
+	this->previousMillis = 0;
+	this->interval = 300;
+	this->pinout = A0;
 }
 
 void Trafficator::update() {
-	if (isEnabled) {
+	if (this->isEnabled) {
 		unsigned long currentMillis = millis();
 
-		if (currentMillis - previousMillis >= interval) {
-			previousMillis = currentMillis;
+		if (currentMillis - this->previousMillis >= this->interval) {
+			this->previousMillis = currentMillis;
 
-			if (ledState == false) {
-				ledState = true;
+			if (this->ledState == false) {
+				this->ledState = true;
 			} else {
-				ledState = false;
+				this->ledState = false;
 			}
 
-			analogWrite(pinout, ledState ? 255 : 0);
+			analogWrite(this->pinout, this->ledState ? 255 : 0);
 		}
-	} else if (!isEnabled && ledState) {
-		ledState = false;
-		analogWrite(pinout, 0);
+	} else if (!this->isEnabled && this->ledState) {
+		this->ledState = false;
+		analogWrite(this->pinout, 0);
 	}
 }
 
 void Trafficator::on() {
-	if (!isEnabled) {
-		Trafficator::off();
-		isEnabled = true;
+	if (!this->isEnabled) {
+		this->off();
+		this->isEnabled = true;
 	}
 }
 
 void Trafficator::off() {
-	if (isEnabled) {
-		isEnabled = false;
-		ledState = false;
-		analogWrite(pinout, 0);
+	if (this->isEnabled) {
+		this->isEnabled = false;
+		this->ledState = false;
+		analogWrite(this->pinout, 0);
 	}
 }
