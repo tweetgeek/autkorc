@@ -2,29 +2,19 @@
 #define LIGHT_H
 
 #include "Arduino.h"
+#include "Trafficator/Trafficator.h"
 
-class Light
-{
+class Light {
 private:
-        int isa;
-        uint8_t frontPin;
-        uint8_t rearPin;
-        uint8_t breakPin;
-
-        bool frontEnabled = false;
-        bool rearEnabled = false;
-        bool breakEnabled = false;
+	Trafficator leftTraff;
+	Trafficator rightTraff;
 
 public:
-        Light();
-        void update();
-        void setup();
-        void frontOn();
-        void frontOff();
-        void rearOn();
-        void rearOff();
-        void breakOn();
-        void breakOff();
+	Light();
+	void update();
+	void setup();
+	void traffRight(bool status);
+	void traffLeft(bool status);
 };
 
 #endif

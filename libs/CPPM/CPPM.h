@@ -20,26 +20,29 @@
 
 ISR(TIMER1_CAPT_vect);
 
-class CPPMReceiver
-{
+class CPPMReceiver {
 private:
-        enum PulseState { SYNC_PULSE, CHAN_PULSE };
+	enum PulseState {
+		SYNC_PULSE, CHAN_PULSE
+	};
 
-        uint8_t _numChannels;
-        volatile bool _synced;
-        volatile PulseState _state;
-        volatile int16_t _channels[CPPM_MAX_CHANNELS];
+	uint8_t _numChannels;
+	volatile bool _synced;
+	volatile PulseState _state;
+	volatile int16_t _channels[CPPM_MAX_CHANNELS];
 
 public:
-        CPPMReceiver() : _synced(false), _state(SYNC_PULSE) {
-        };
-        void begin(uint8_t numChannels);
-        void end();
-        bool ok();
-        void read(int16_t *channels);
-        int16_t readChannel(int channel);
+	CPPMReceiver() :
+			_synced(false), _state(SYNC_PULSE) {
+	}
+	;
+	void begin(uint8_t numChannels);
+	void end();
+	bool ok();
+	void read(int16_t *channels);
+	int16_t readChannel(int channel);
 
-        friend void TIMER1_CAPT_vect();
+	friend void TIMER1_CAPT_vect();
 };
 
 extern CPPMReceiver CPPM;

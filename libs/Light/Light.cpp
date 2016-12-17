@@ -1,42 +1,34 @@
 #include "LIGHT.h"
 #include "Arduino.h"
+#include "Trafficator/Trafficator.h"
 
-Light::Light () {
+Light::Light() {
+	Trafficator leftTraff = Trafficator(A0);
+	Trafficator rightTraff = Trafficator(A1);
 }
 
 void Light::setup() {
-        pinMode(frontPin, OUTPUT);
-        pinMode(rearPin, OUTPUT);
-        pinMode(breakPin, OUTPUT);
-
-        digitalWrite(frontPin, LOW);
-        digitalWrite(rearPin, LOW);
-        digitalWrite(rearPin, LOW);
+	leftTraff.setup();
+	rightTraff.setup();
 }
 
 void Light::update() {
-        digitalWrite(frontPin, frontEnabled ? HIGH : LOW);
-        digitalWrite(rearPin, rearEnabled ? HIGH : LOW);
-        digitalWrite(breakPin, breakEnabled ? HIGH : LOW);
+	leftTraff.update();
+	rightTraff.update();
 }
 
-void Light::frontOn() {
-        frontEnabled = true;
+void Light::traffRight(bool status) {
+	if (status) {
+		rightTraff.on();
+	} else {
+		rightTraff.off();
+	}
 }
-void Light::frontOff() {
-        frontEnabled = false;
+void Light::traffLeft(bool status) {
+	if (status) {
+		leftTraff.on();
+	} else {
+		leftTraff.off();
+	}
 }
 
-void Light::rearOn() {
-        frontEnabled = true;
-}
-void Light::rearOff() {
-        rearEnabled = false;
-}
-
-void Light::breakOn() {
-        breakEnabled = true;
-}
-void Light::breakOff() {
-        breakEnabled = false;
-}
