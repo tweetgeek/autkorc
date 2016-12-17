@@ -7,6 +7,7 @@
 class Light {
 private:
 	bool isEnabled;
+	bool isBackGearEnabled;
 	Trafficator leftTraff;
 	Trafficator rightTraff;
 

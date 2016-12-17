@@ -1,8 +1,11 @@
 #ifndef SETTINGS_H
 #define SETTINGS_H
 
+#include "Arduino.h"
 
 // GENERAL
+#define ON true
+#define OFF false
 #define DEADBAND 5
 
 //SERVO - Steering Wheel
@@ -14,23 +17,28 @@
 
 
 // ENGINE
-#define ENGINE_PIN_OUT 0
+#define ENGINE_PIN_IN_1 4
+#define ENGINE_PIN_IN_2 5
+#define ENGINE_PIN_STBY 7
+#define ENGINE_PIN_PWMA 6
+
 
 // LIGHTS
-#define LIGHTS_MAIN_PIN_OUT 0
-#define LIGHTS_REAR_PIN_OUT 0
-#define LIGHTS_LEFT_PIN_OUT 0
-#define LIGHTS_RIGHT_PIN_OUT 0
+#define LIGHTS_MAIN_PIN_OUT A2
+#define LIGHTS_REAR_PIN_OUT A3
+#define LIGHTS_LEFT_PIN_OUT A0
+#define LIGHTS_RIGHT_PIN_OUT A1
+#define LIGHTS_BACK_PIN_OUT A4
 
 
 // CPPM
+#define CPPM_PIN_IN 8
 #define CPPM_MAX_ERRORS 10
 #define CPPM_NUM_CHANNELS 8
-#define CPPM_PIN_IN 8
 #define CPPM_THROTLE_CHANNEL 0
 #define CPPM_STEERING_CHANNEL 1
 #define CPPM_LIGHTS_CHANNEL 2
-#define CPPM_REAR_CHANNEL 3
+#define CPPM_BACKGEAR_CHANNEL 3
 #define CPPM_GEAR_CHANNEL 4
 
 #define CPPM_HORN_CHANNEL 7

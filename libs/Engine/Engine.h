@@ -5,19 +5,17 @@
 #include "Light/Light.h"
 #include "CPPM/CPPM.h"
 
-class Engine
-{
+class Engine {
 private:
-        uint8_t pwmPin;
-        Light& lights;
-
+	Light _lights;
+	int errorCounter;
+	int gear;
+	int16_t iCppmPosition;
+	int16_t iCppmPositionLast;
 
 public:
-        Engine();
-        void update();
-        void setup(Light& lightRef);
-        int getSpeed();
-        bool getDirection();
+	void update();
+	void setup(Light &lights);
 };
 
 #endif
