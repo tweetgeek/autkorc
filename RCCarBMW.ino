@@ -10,15 +10,15 @@
 // 3 - servo (2 zablokowana timer)
 // 8 - cppm (9 10 zablokowane)
 
-Light lights = Light();
-Steering steering = Steering(&lights);
-//Engine engine = Engine();
+Light lights;
+Steering steering;
+//Engine engine;
 
 void setup(void) {
 	Serial.begin(9600);
 	CPPM.begin(CPPM_NUM_CHANNELS);
 	lights.setup();
-	steering.setup();
+	steering.setup(lights);
 //        engine.setup();
 }
 

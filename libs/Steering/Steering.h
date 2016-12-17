@@ -12,15 +12,13 @@ private:
 	int16_t iCppmPositionLast;
 	int errorCounter;
 	ServoTimer2 sServo;
-	Light *_lights;
+	Light _lights;
 
 public:
-	Steering(Light *lights);
 	void update();
-	void setup();
+	void setup(Light &lights);
 	int16_t convertPosition(int16_t currentValue);
 	int16_t fixRange(int16_t value);
-	void checkTrafficator(int16_t position);
 };
 
 #endif

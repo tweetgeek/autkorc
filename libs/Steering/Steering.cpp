@@ -1,16 +1,8 @@
 #include "Steering.h"
 #include "Arduino.h"
 #include "CPPM/CPPM.h"
+#include "CPPMHelper/CPPMHelper.h"
 #include "ServoTimer2/ServoTimer2.h"
-
-Steering::Steering(Light *lights) {
-	iCppmPosition = SERVO_ZERO_POSITION;
-	iCppmPositionLast = SERVO_ZERO_POSITION;
-	errorCounter = 0;
-	ServoTimer2 sServo;
-
-	_lights = lights;
-}
 
 int16_t Steering::convertPosition(int16_t currentValue) {
 	if (currentValue) {
@@ -31,21 +23,10 @@ int16_t Steering::fixRange(int16_t value) {
 	return value;
 }
 
-void Steering::checkTrafficator(int16_t position) {
-	if (position > SERVO_ZERO_POSITION + 150) {
-		_lights->traffRight(true);
-	} else if (position < SERVO_ZERO_POSITION - 150) {
-		_lights->traffLeft(true);
-	} else {
-		_lights->traffRight(false);
-		_lights->traffLeft(false);
-	}
-}
-
 void Steering::update() {
 	if (CPPM.ok()) {
 		errorCounter = 0;
-		int16_t channelsValue = CPPM.readChannel(1);
+		int16_t channelsValue = CPPM.readChannel(CPPM_STEERING_CHANNEL);
 		iCppmPosition = Steering::convertPosition(channelsValue);
 	} else {
 		++errorCounter;
@@ -57,7 +38,7 @@ void Steering::update() {
 		}
 	}
 
-	if ( abs(iCppmPositionLast - iCppmPosition) > DEADBAND
+	if (RHelper.deadbandFilter(iCppmPositionLast, iCppmPosition)
 			&& errorCounter == 0) { //DEADBAND
 		iCppmPositionLast = iCppmPosition;
 		Serial.print("Set Servo Position: ");
@@ -67,9 +48,14 @@ void Steering::update() {
 		sServo.write(iCppmPosition);
 	}
 
-	Steering::checkTrafficator(iCppmPosition);
+	_lights.updateSteeringPosition(iCppmPosition);
 }
 
-void Steering::setup() {
+void Steering::setup(Light &lights) {
+	iCppmPosition = SERVO_ZERO_POSITION;
+	iCppmPositionLast = SERVO_ZERO_POSITION;
+	errorCounter = 0;
+
+	_lights = lights;
 	sServo.attach(3);
 }

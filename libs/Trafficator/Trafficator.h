@@ -13,9 +13,8 @@ private:
 	long interval;
 
 public:
-	Trafficator(uint8_t pin);
 	void update();
-	void setup();
+	void setup(uint8_t pin);
 	void on();
 	void off();
 };

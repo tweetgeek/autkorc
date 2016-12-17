@@ -6,13 +6,14 @@
 
 class Light {
 private:
+	bool isEnabled;
 	Trafficator leftTraff;
 	Trafficator rightTraff;
 
 public:
-	Light();
 	void update();
 	void setup();
+	void updateSteeringPosition(int16_t position);
 	void traffRight(bool status);
 	void traffLeft(bool status);
 };

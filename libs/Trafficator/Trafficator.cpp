@@ -1,14 +1,10 @@
 #include "Trafficator.h"
 
-Trafficator::Trafficator(uint8_t pin) {
-	pinout = pin;
+void Trafficator::setup(uint8_t pin) {
 	isEnabled = false;
 	ledState = false;
 	previousMillis = 0;
 	interval = 300;
-}
-
-void Trafficator::setup() {
 	pinout = A0;
 }
 

@@ -3,25 +3,22 @@
 #include "Arduino.h"
 #include "CPPM/CPPM.h"
 
-
-Engine::Engine () {
-}
-
 void Engine::setup(Light& lightRef) {
-        lights = lightRef;
+	lights = lightRef;
 }
-
 
 int Engine::getSpeed() {
-        if (!CPPM.ok()) return -1;
-        return CPPM.readChannel(0);
+	if (!CPPM.ok())
+		return -1;
+	return CPPM.readChannel(0);
 }
 
 bool Engine::getDirection() {
-        if (!CPPM.ok()) return false;
-        return CPPM.readChannel(2);
+	if (!CPPM.ok())
+		return false;
+	return CPPM.readChannel(2);
 }
 
 void Engine::update() {
-        //  lights.frontOn();
+	//  lights.frontOn();
 }
