@@ -1,14 +1,14 @@
 #include "Steering.h"
 #include "Arduino.h"
 #include "CPPM/CPPM.h"
+#include "Light/Light.h"
 #include "CPPMHelper/CPPMHelper.h"
 #include "ServoTimer2/ServoTimer2.h"
 
 int16_t Steering::convertPosition(int16_t currentValue) {
 	if (currentValue) {
-		return this->fixRange(
-				map(currentValue, 0, 255, SERVO_MAX_ANGLE_LEFT,
-				SERVO_MAX_ANGLE_RIGHT));
+		return this->fixRange(map(currentValue, 0, 255, SERVO_MAX_ANGLE_LEFT,
+		SERVO_MAX_ANGLE_RIGHT));
 	}
 	return 0;
 }
@@ -33,29 +33,34 @@ void Steering::update() {
 		if (this->errorCounter > CPPM_MAX_ERRORS) {
 			this->errorCounter = 0;
 			this->iCppmPosition = SERVO_ZERO_POSITION;
-			Serial.print("Comunication error!! Set center");
-			Serial.print("\n");
+//			Serial.print("Comunication error!! Set center");
+//			Serial.print("\n");
 		}
 	}
 
 	if (RHelper.deadbandFilter(this->iCppmPositionLast, this->iCppmPosition)
 			&& this->errorCounter == 0) { //DEADBAND
 		this->iCppmPositionLast = this->iCppmPosition;
-		Serial.print("Set Servo Position: ");
-		Serial.print(this->iCppmPosition);
-		Serial.print("\n");
+//		Serial.print("Set Servo Position: ");
+//		Serial.print(this->iCppmPosition);
+//		Serial.print("\n");
 
 		this->sServo.write(this->iCppmPosition);
 	}
 
-	this->_lights.updateSteeringPosition(this->iCppmPosition);
+	Lights.updateSteeringPosition(this->iCppmPosition);
 }
 
-void Steering::setup(Light &lights) {
+void Steering::setup() {
 	this->iCppmPosition = SERVO_ZERO_POSITION;
 	this->iCppmPositionLast = SERVO_ZERO_POSITION;
 	this->errorCounter = 0;
 
-	this->_lights = lights;
 	this->sServo.attach(3);
 }
+
+int16_t Steering::getPosition() {
+	return this->iCppmPosition;
+}
+
+Steering steering;

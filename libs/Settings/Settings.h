@@ -21,6 +21,7 @@
 #define ENGINE_PIN_IN_2 5
 #define ENGINE_PIN_STBY 7
 #define ENGINE_PIN_PWMA 6
+#define ENGINE_MAX_PWM 236 //dla 5v - max 4.5V
 
 
 // LIGHTS
@@ -33,7 +34,7 @@
 
 // CPPM
 #define CPPM_PIN_IN 8
-#define CPPM_MAX_ERRORS 10
+#define CPPM_MAX_ERRORS 500
 #define CPPM_NUM_CHANNELS 8
 #define CPPM_THROTLE_CHANNEL 0
 #define CPPM_STEERING_CHANNEL 1

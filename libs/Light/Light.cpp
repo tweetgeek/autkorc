@@ -65,3 +65,17 @@ void Light::traffLeft(bool status) {
 	}
 }
 
+bool Light::getStatus() {
+	return this->isEnabled;
+}
+
+int Light::getTraffStatus() {
+	if (this->leftTraff.getStatus())
+		return 1;
+	if (this->rightTraff.getStatus())
+		return 2;
+	return 0;
+}
+
+Light Lights;
+

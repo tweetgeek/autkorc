@@ -17,6 +17,7 @@ public:
 	void setup(uint8_t pin);
 	void on();
 	void off();
+	bool getStatus();
 };
 
 #endif

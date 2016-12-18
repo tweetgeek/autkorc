@@ -17,6 +17,10 @@ public:
 	void updateSteeringPosition(int16_t position);
 	void traffRight(bool status);
 	void traffLeft(bool status);
+	bool getStatus();
+	int getTraffStatus();
 };
+
+extern Light Lights;
 
 #endif

@@ -43,3 +43,7 @@ void Trafficator::off() {
 		analogWrite(this->pinout, 0);
 	}
 }
+
+bool Trafficator::getStatus() {
+	return this->isEnabled;
+}

@@ -8,7 +8,6 @@
 
 class Engine {
 private:
-	Light _lights;
 	int errorCounter;
 	GearBox gearBox;
 	int16_t iCppmPosition;
@@ -17,12 +16,16 @@ private:
 
 public:
 	void update();
-	void setup(Light &lights);
+	void setup();
 	void drive();
 	void brake();
 	int16_t getSpeed();
 	void sleep();
 	void activate();
+	int getGear();
 };
+
+
+extern Engine engine;
 
 #endif

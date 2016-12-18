@@ -57,9 +57,16 @@ void CPPMReceiver::read(int16_t *channels) {
  Each channel value is mapped from a raw pulse width to an int16_t value (nominally 0-255).
  */
 int16_t CPPMReceiver::readChannel(int channel) {
-	return map(_channels[channel],
+	int16_t cvv = map(_channels[channel],
 	CPPM_CHAN_PULSE_WIDTH_MIN,
 	CPPM_CHAN_PULSE_WIDTH_MAX, 0, 255);
+
+	if (cvv < 0)
+		return 0;
+	if (cvv > 255)
+		return 255;
+
+	return cvv;
 }
 
 /**
