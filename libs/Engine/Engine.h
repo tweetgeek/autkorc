@@ -13,10 +13,16 @@ private:
 	GearBox gearBox;
 	int16_t iCppmPosition;
 	int16_t iCppmPositionLast;
+	bool isActive;
 
 public:
 	void update();
 	void setup(Light &lights);
+	void drive();
+	void brake();
+	int16_t getSpeed();
+	void sleep();
+	void activate();
 };
 
 #endif
