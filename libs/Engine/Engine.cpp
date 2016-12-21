@@ -22,6 +22,7 @@ void Engine::setup() {
 	this->iCppmPosition = 0;
 	this->iCppmPositionLast = 0;
 	this->isActive = false;
+	this->isLocked = false;
 }
 
 void Engine::update() {
@@ -37,18 +38,19 @@ void Engine::update() {
 		++this->errorCounter;
 		if (this->errorCounter > CPPM_MAX_ERRORS) {
 			this->errorCounter = 0;
-//			this->iCppmPosition = 0;
-//			Serial.print("Comunication error!! Set zero");
-//			Serial.print("\n");
 		}
 	}
 
-	if (RHelper.deadbandFilter(this->iCppmPositionLast, this->iCppmPosition)
-			&& this->errorCounter == 0) { //DEADBAND
+	if (this->isLocked) {
+		this->hardBrake();
+//		this->sleep();
 
-//		Serial.print("Set thr ");
-//		Serial.print(this->iCppmPosition);
-//		Serial.print("\n");
+		if (this->iCppmPosition == 0) {
+			this->isLocked = false;
+		}
+	} else if (RHelper.deadbandFilter(this->iCppmPositionLast,
+			this->iCppmPosition) && this->errorCounter == 0) { //DEADBAND
+
 		if (this->iCppmPosition >= 10) {
 			this->activate();
 		} else if (this->iCppmPosition < 10) {
@@ -59,20 +61,22 @@ void Engine::update() {
 			this->drive();
 		}
 
-		if (this->iCppmPositionLast > this->iCppmPosition) {
-//			this->brake();
+		if (this->iCppmPositionLast == 0 && this->iCppmPosition == 0) {
+			this->brake();
 		}
-
 		this->iCppmPositionLast = this->iCppmPosition;
 	}
 }
 
 void Engine::drive() {
-	digitalWrite(ENGINE_PIN_IN_1, 0);
-	digitalWrite(ENGINE_PIN_IN_2, 1);
+	if (this->gearBox.is(A_HIGH)) {
+		digitalWrite(ENGINE_PIN_IN_2, 0);
+		digitalWrite(ENGINE_PIN_IN_1, 1);
+	} else {
+		digitalWrite(ENGINE_PIN_IN_1, 0);
+		digitalWrite(ENGINE_PIN_IN_2, 1);
+	}
 	analogWrite(ENGINE_PIN_PWMA, this->getSpeed());
-//	Serial.print("Speed: ");
-//	Serial.println(this->getSpeed());
 }
 
 void Engine::brake() {
@@ -80,9 +84,13 @@ void Engine::brake() {
 	digitalWrite(ENGINE_PIN_IN_2, 1);
 }
 
+void Engine::hardBrake() {
+	digitalWrite(ENGINE_PIN_IN_1, 0);
+	digitalWrite(ENGINE_PIN_IN_2, 0);
+}
+
 void Engine::sleep() {
 	if (this->isActive) {
-		Serial.println("Sleep");
 		digitalWrite(ENGINE_PIN_STBY, 0);
 		this->isActive = false;
 	}
@@ -90,7 +98,6 @@ void Engine::sleep() {
 
 void Engine::activate() {
 	if (this->isActive == false) {
-		Serial.println("Activate");
 		this->isActive = true;
 		digitalWrite(ENGINE_PIN_STBY, 1);
 	}
@@ -98,15 +105,15 @@ void Engine::activate() {
 
 int16_t Engine::getSpeed() {
 	if (this->gearBox.is(A_MEDIUM))
-		return map(this->iCppmPosition, 0, 255, 0, 128);
-	if (this->gearBox.is(A_HIGH))
-		return map(this->iCppmPosition, 0, 255, 0, ENGINE_MAX_PWM);
+		return map(this->iCppmPosition, 0, 255, 0, 255);
 
-	return map(this->iCppmPosition, 0, 255, 0, 64);
+	if (this->gearBox.is(A_HIGH)) //wsteczny
+		return map(this->iCppmPosition, 0, 255, 0, 190);
+
+	return map(this->iCppmPosition, 0, 255, 0, ENGINE_MAX_PWM);
 }
 
 int Engine::getGear() {
-
 	return this->gearBox.get();
 }
 

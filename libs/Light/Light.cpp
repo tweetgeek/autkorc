@@ -14,20 +14,11 @@ void Light::setup() {
 void Light::update() {
 	if (CPPM.ok()) {
 		int16_t channelsValue = CPPM.readChannel(CPPM_LIGHTS_CHANNEL);
-		if (RHelper.auxValue(channelsValue) == A_HIGH && !this->isEnabled) {
+		if (RHelper.auxValue(channelsValue) > A_LOW && !this->isEnabled) {
 			this->isEnabled = true;
 		} else if (RHelper.auxValue(channelsValue) == A_LOW
 				&& this->isEnabled) {
 			this->isEnabled = false;
-		}
-
-		channelsValue = CPPM.readChannel(CPPM_BACKGEAR_CHANNEL);
-		if (RHelper.auxValue(channelsValue) == A_HIGH
-				&& !this->isBackGearEnabled) {
-			this->isBackGearEnabled = true;
-		} else if (RHelper.auxValue(channelsValue) == A_LOW
-				&& this->isBackGearEnabled) {
-			this->isBackGearEnabled = false;
 		}
 	}
 
@@ -35,8 +26,8 @@ void Light::update() {
 	analogWrite(LIGHTS_REAR_PIN_OUT, this->isEnabled ? 255 : 0);
 	analogWrite(LIGHTS_BACK_PIN_OUT, this->isBackGearEnabled ? 255 : 0);
 
-	this->leftTraff.update();
 	this->rightTraff.update();
+	this->leftTraff.update();
 }
 
 void Light::updateSteeringPosition(int16_t position) {
@@ -62,6 +53,14 @@ void Light::traffLeft(bool status) {
 		this->leftTraff.on();
 	} else {
 		this->leftTraff.off();
+	}
+}
+
+void Light::updateGearPosition(int position) {
+	if (position == A_HIGH) {
+		this->isBackGearEnabled = true;
+	} else {
+		this->isBackGearEnabled = false;
 	}
 }
 

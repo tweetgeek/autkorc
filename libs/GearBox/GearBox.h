@@ -6,6 +6,7 @@
 class GearBox {
 private:
 	int gear;
+	int oldGear;
 
 public:
 	void update();

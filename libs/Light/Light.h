@@ -15,6 +15,7 @@ public:
 	void update();
 	void setup();
 	void updateSteeringPosition(int16_t position);
+	void updateGearPosition(int position);
 	void traffRight(bool status);
 	void traffLeft(bool status);
 	bool getStatus();

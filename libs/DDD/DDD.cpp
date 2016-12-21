@@ -28,9 +28,6 @@ void DDD::update() {
 			ddp("2");
 			break;
 		case 2:
-			ddp("3");
-			break;
-		case 3:
 			ddp("R");
 			break;
 		}
@@ -52,6 +49,8 @@ void DDD::update() {
 			ddp("RIGHT");
 			break;
 		}
+		ddp(" \Locked: ");
+		ddp(engine.isLocked ? "Y" : "N");
 		ddpln("");
 
 		ddp("{DDD CH} ");

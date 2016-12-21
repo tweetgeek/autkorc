@@ -5,6 +5,7 @@
 #include "Light/Light.h"
 #include "Engine/Engine.h"
 #include "Steering/Steering.h"
+#include "Horn/Horn.h"
 #include "DDD/DDD.h"
 
 //PINOUT
@@ -29,6 +30,7 @@ void setup(void) {
 	Lights.setup();
 	steering.setup();
 	engine.setup();
+	horn.setup();
 	ddd.setup();
 }
 
@@ -36,6 +38,7 @@ void loop(void) {
 	steering.update();
 	engine.update();
 	Lights.update();
+	horn.update();
 	ddd.update();
 	delay(27);
 }

@@ -2,9 +2,12 @@
 #include "Arduino.h"
 #include "CPPM/CPPM.h"
 #include "CPPMHelper/CPPMHelper.h"
-//TODO FAILSAFE && DEADBAND
+#include "Light/Light.h"
+#include "Engine/Engine.h"
+
 void GearBox::setup() {
 	this->gear = A_LOW;
+	this->oldGear = A_LOW;
 }
 
 void GearBox::update() {
@@ -14,6 +17,16 @@ void GearBox::update() {
 	} else {
 		this->gear = A_LOW;
 	}
+
+	Lights.updateGearPosition(this->gear);
+
+	if ((this->oldGear != A_HIGH && this->gear == A_HIGH)
+			|| (this->oldGear == A_HIGH && this->gear != A_HIGH)) {
+		engine.isLocked = true;
+		Serial.println("LOCKED!");
+	}
+
+	this->oldGear = this->gear;
 }
 
 int GearBox::get() {

@@ -5,7 +5,7 @@ void Trafficator::setup(uint8_t pin) {
 	this->ledState = false;
 	this->previousMillis = 0;
 	this->interval = 300;
-	this->pinout = A0;
+	this->pinout = pin;
 }
 
 void Trafficator::update() {

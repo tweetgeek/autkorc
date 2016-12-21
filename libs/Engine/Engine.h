@@ -15,10 +15,12 @@ private:
 	bool isActive;
 
 public:
+	bool isLocked;
 	void update();
 	void setup();
 	void drive();
 	void brake();
+	void hardBrake();
 	int16_t getSpeed();
 	void sleep();
 	void activate();
